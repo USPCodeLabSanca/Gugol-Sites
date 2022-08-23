@@ -1,0 +1,24 @@
+{
+  "name": "gugol-sites",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/USPCodeLabSanca/Gugol-Sites.git"
+  },
+  "author": "USPCodeLab Sanca",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/USPCodeLabSanca/Gugol-Sites/issues"
+  },
+  "homepage": "https://github.com/USPCodeLabSanca/Gugol-Sites#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  }
+}
