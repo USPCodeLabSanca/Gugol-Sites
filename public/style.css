@@ -27,12 +27,28 @@ body{
 }
 
 .capa {
-    height: 300px;
+    height: 450px;
     width: 100%;
     /* background-color: #2B4865; */
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
+}
+
+.mainLoginButton {
+    padding: 1em;
+    width: 50%;
+    border-color: var(--cor_letra_laranja);
+    background-color: white;
+    color: black;
+    border: 0px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 5px;
+    border-radius: 15px;
+    width: 20em;
+    border-color: var(--azul_escuro);
+    text-align: center;
 }
 
 .formDiv {
@@ -41,7 +57,6 @@ body{
     padding: 2em;
     border-radius: 20px;
     margin-top: 5.5em;
-    position: fixed;
 }
 
 .formInputs {
@@ -89,13 +104,30 @@ nav a:hover {
     font-size: 1.1rem;
 }
 
+header button {
+    border-radius: 5px;
+    border: none;
+    padding: 0.75em;
+    width: 4em;
+}
+
+header button:hover {
+    background-color: var(--cor_letra_laranja);
+    color: white;
+}
+
+header button:focus {
+    background-color: #de7e42;
+    color: white;
+}
+
 .index_top {
     align-items: center;
 }
 
-.portalacesso{
-    align-self: flex-end;
-    margin-left: auto;
+#portalacesso{
+    position: absolute;
+    left: 1350px;
 }
 
 footer {
@@ -107,3 +139,35 @@ footer {
     display: flex;
     justify-content: space-between;
 }
+
+#navinicial {
+    padding: 1.5em;
+}
+
+.cardSection {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0em 2em;
+    justify-content: center;
+}
+
+.card {
+    margin: 1em;
+    background-color: var(--cor_letra_laranja);
+    width: 14em;
+    min-height: 16em;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card p {
+    padding: 1em;
+    background-color: white;
+    border-radius: 0px 0px 15px 15px;
+    color: var(--azul_escuro);
+    font-size: 20px;
+    font-weight: bold;
+}
+

@@ -11,20 +11,22 @@
         <nav class="alignRow">
             <a href="index.html">Página Inicial</a>
             <h1>Gugol Sites</h1>
-            <a href="">Portal de Acesso</a>
+            <a href="portal.html">Portal de Acesso</a>
         </nav>
     </header>
     <main class="alignColumn">
         <div class="formDiv alignColumn">
             <h1>Login</h1>
-            <div class="formInputs alignColumn">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" />
-                
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" />
-                <input type="submit" value="Login">
-            </div>
+            <form action="/user/auth" method="post">
+                <div class="formInputs alignColumn">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required>
+                    
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required/>
+                    <input type="submit" value="Login">
+                </div>
+            </form>
         </div>
     </main>
     <footer>

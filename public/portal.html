@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Acesso</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="alignRow">
+            <a href="index.html">Página Inicial</a>
+            <h1>Gugol Sites</h1>
+            <button id="sair">Sair</button>
+        </nav>
+    </header>
+    <main class="alignColumn">
+        <div class="cardSection">
+            <div class="card">
+                <p>Site 1</p>
+            </div>
+            <div class="card">
+                <p>Site 2</p>
+            </div>
+            <div class="card">
+                <p>Site 3</p>
+            </div>
+            <div class="card">
+                <p>Site 4</p>
+            </div>
+            <div class="card">
+                <p>Site 5</p>
+            </div>
+            <div class="card">
+                <p>Site 6</p>
+            </div>
+            <div class="card">
+                <p>Site 7</p>
+            </div>
+            <div class="card">
+                <p>Site 8</p>
+            </div>
+        </div>
+    </main>
+    <script>
+        const sair = document.getElementById('sair')
+        sair.addEventListener('click', () => {
+            window.location.replace("./index.html")
+            document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+        })
+    </script>
+</body>
+</html>

@@ -8,25 +8,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <script src="cadastro.js"></script>
     <header>
         <nav class="alignRow">
             <a href="index.html">Página Inicial</a>
             <h1>Gugol Sites</h1>
-            <a href="">Portal de Acesso</a>
+            <a href="portal.html">Portal de Acesso</a>
         </nav>
     </header>
     <main class="alignColumn">
         <div class="formDiv alignColumn">
             <h1>Cadastro</h1>
-            <div class="formInputs alignColumn">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" />
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" />
-                <label for="confirm">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirm" />
-                <input type="submit" value="Cadastrar">
-            </div>
+            <form id="cad" onsubmit="verificar(event)">
+                <div class="formInputs alignColumn">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required/>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required/>
+                    <label for="confirm">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirm" required/>
+                    <input type="submit" value="Cadastrar">
+                </div>
+            </form>
         </div>
     </main>
     <footer>
