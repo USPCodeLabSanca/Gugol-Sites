@@ -22,7 +22,7 @@ module.exports.authUser = async (req, res) => {
         if (await bcrypt.compare(req.body.password, user.password)) {
             const token = jwt.sign({'user': user._id}, process.env.ACCESS_KEY)
             res.cookie('token', token);
-            return res.redirect('/index.html');
+            return res.redirect('/portal.html');
         }
         return res.status(404).send("Usuário ou senha incorreto(a)")
     }

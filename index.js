@@ -11,6 +11,7 @@ const PORT = 10323;
 
 // Routes
 app.use(require('./routes/user'));
+app.use(require('./routes/site'));
 
 console.log(process.env.CONN_STR);
 
