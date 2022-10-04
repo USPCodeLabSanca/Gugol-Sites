@@ -13,8 +13,6 @@ const PORT = 10323;
 app.use(require('./routes/user'));
 app.use(require('./routes/site'));
 
-console.log(process.env.CONN_STR);
-
 mongoose.connect(process.env.CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
