@@ -11,7 +11,7 @@
     <header>
         <nav class="alignRow" id="navinicial">
             <h1>Gugol Sites</h1>
-            <a href="" id="portalacesso">Portal de Acesso</a>
+            <a href="./portal.html" id="portalacesso">Portal de Acesso</a>
         </nav>
     </header>
     <img class="capa" src="./assets/gugol_cover.png" alt="capa do site">
@@ -31,34 +31,5 @@
         <span><b>Telefone: </b>+55 (16) 98373-8123</span>
         <span>Feito com carinho por USPCodeLab &lt;3</span>
     </footer>
-
-    <script>
-        button = document.getElementById("portalacesso");
-
-        button.addEventListener("click", function (e) {
-            e.preventDefault();
-
-            if (document.cookie != "") {
-                const token = document.cookie.split('token=')[1];
-                const user = JSON.parse(atob(token.split('.')[1]));
-                
-                fetch(`/user/${user.user}/portal`, {
-                    method: 'GET',
-                    headers: {
-                        authorization: `Bearer ${token}` 
-                    }
-                }).then(res => {
-                    if(res.ok){
-                        window.location.replace("/portal.html");
-                    }
-                    else{
-                        window.alert("Usuário não autorizado.");
-                    }
-                });
-            } else {
-                window.alert("Usuário não autorizado.");
-            }
-        });
-    </script>
 </body>
 </html>

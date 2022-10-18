@@ -4,6 +4,64 @@ sair.addEventListener('click', () => {
     document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
 });
 
+function get_token() {
+     if (document.cookie != "") {
+        const token = document.cookie.split('token=')[1];
+        return token;
+    }
+
+    return undefined;
+}
+
+function get_user_from_token(token) {
+    if (document.cookie != "") {
+        const user = JSON.parse(atob(token.split('.')[1]));
+        return user;
+    }
+
+    return undefined;
+}
+
+async function get_sites(){
+    if (document.cookie != "") {
+        token = get_token()
+        user = get_user_from_token(token)
+
+        const res = await fetch(`/user/${user.user}/site`, {
+            method: 'GET',
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+        
+        return await res.json();
+    }
+}
+
+(function(){
+    if (document.cookie != "") {
+        token = get_token() 
+        user = get_user_from_token(token);
+        
+        fetch(`/user/${user.user}`, {
+            method: 'GET',
+            headers: {
+                authorization: `Bearer ${token}` 
+            }
+        }).then(res => {
+            if(!res.ok){
+                window.alert("Usuario nao aturorizado");
+                window.location.replace("./index.html");
+            } else {
+                console.log("Deu certo");
+            }
+        });
+    } else {
+        window.alert("Usuário não autorizado.");
+        window.location.replace("./index.html");
+    }
+})();
+
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -21,53 +79,34 @@ function setAttributes(element, attrs){
 }
 */
 
-function carregarSites(sites) {
-    div_pai = document.getElementByClass("card-section")
+function adicionarSites(sites) {
+    div_pai = document.getElementsByClassName("cardSection")[0]
     for(let site of sites){
         let card = document.createElement("div")
-        card.class="card"
-        let card_inner = document.createElement("div")
-        //card front
-        let card_front = document.createElement("div")
-        card_front.class="card-front"
-        let card_front_p = document.createElement("p")
-        card_front_p.innerText = site.name
-        card_front.appendChild(card_front_p)
-        card_inner.appendChild(card_front)
-        //card back
-        card_back = document.createElement("div")
-        card_back.class="card-back"
-        //label
-        label = document.createElement("label")
-        label.setAttribute("for", "site-name")
-        label.innerText = "Change name"
-        card_back.appendChild(label)
-        //align row
-        align_row = document.createElement("div")
-        align_row.setAttribute("class", "alignRow")
-        change_name_input = document.createElement("input")
-        setAttributes(change_name_input, {
-            type: "text",
-            name: "site-name",
-            placeholder: site.name
-        })
-        let change_name_button = document.createElement("button")
-        change_name_button.innerText = "Change!"
-        change_name_button.setAttribute("class", "changeButton")
-        align_row.appendChild(change_name_input)
-        align_row.appendChild(change_name_button)
-        card_back.appendChild(align_row)
-        //del download switch
-        del = document.createElement("button")
-        del.setAttribute("class", "smallButtons")
-        del.innerText("Delete site")
-        down = document.createElement("button")
-        down.setAttribute("class", "smallButtons")
-        down.innerText("Download site")
-        card_back.appendChild(del)
-        card_back.appendChild(down)
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="card-front">
+                    <p>${site.name}</p>
+                </div>
+                <div class="card-back">
+                    <label for="site-name">Change name</label>
+                    <div class="alignRow">
+                        <input type="text" name="site-name" id="site-name" placeholder="${site.name}">
+                        <button class="changeButton">Change!</button>
+                    </div>
+                    <button class="smallButton">Delete site</button>
+                    <button class="smallButton">Download site</button>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            `
+        card.className = "card"
+        div_pai.appendChild(card)
     }
-
+    return
 }
 
 function promptCriar() {
@@ -78,11 +117,15 @@ function promptCriar() {
         return;
     }
 
-    token = getCookie('token')
-    fetch('/site', {
+    token2 = getCookie('token')
+    token = get_token();
+    user = get_user_from_token(token);
+    
+    fetch(`/site/${user.user}/create`, {
         method: 'POST',
-        body: JSON.stringify({'name' : name, 'token' : token}),
+        body: JSON.stringify({'name' : name, 'token' : token2}),
         headers: {
+            authorization: `Bearer ${token}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
@@ -101,3 +144,15 @@ function promptCriar() {
         
     });
 }
+
+// get_sites().then(
+//     (sites) => {
+//         adicionarSites(sites)
+//     }
+// )
+
+async function load_current_user_sites(){
+   const sites = await get_sites();
+   adicionarSites(sites)
+}
+load_current_user_sites();

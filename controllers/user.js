@@ -1,6 +1,8 @@
 const userModel = require('../models/user')
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const access = require('./access');
+const siteModel = require('../models/site')
 
 module.exports.createUser = async(req, res) => {
     try {
@@ -25,38 +27,19 @@ module.exports.authUser = async (req, res) => {
             res.cookie('token', token);
             return res.redirect('/portal.html');
         }
-        return res.status(404).send("Usuário ou senha incorreto(a)")
     }
     return res.status(404).send("Usuário ou senha incorreto(a)")
 }
 
 module.exports.getUser = async (req, res) => {
     try {
-        const userID = req.sub;
-        console.log(userID)
-        if (userID !== req.params.id)
+        allowed = access.userOnly(req.sub, req.params.id)
+        if (!allowed)
             return res.status(500).send("Not authorized");
         const user = await userModel.findById(req.params.id);
         if (user != null)
             return res.status(200).send(user)
         return res.status(404).send("User not found")
-    }
-    catch (error) {
-        console.log(error)
-        return res.status(500).send(error)
-    }
-}
-
-module.exports.getPortal = async (req, res) => {
-    try {
-        const userID = req.sub;
-        console.log(userID)
-        console.log(req.params.id)
-        if (userID !== req.params.id)
-            return res.status(500).send("Not authorized");
-
-        return res.status(200).send("Portal encontrado");
-        //return res.status(404).send("User not found")
     }
     catch (error) {
         console.log(error)
@@ -79,3 +62,11 @@ module.exports.validateToken = (req, res, next) => {
         next();
     });
 };
+
+module.exports.getUsersSite = async (req, res) => {
+    allowed = access.userOnly(req.sub, req.params.id)
+    if (!allowed)
+        return res.status(500).send("Not authorized");
+    sites = await siteModel.find({user: req.sub});
+    return res.status(200).json(sites)
+}
