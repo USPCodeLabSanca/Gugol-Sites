@@ -16,17 +16,15 @@ module.exports.createSite = async(req, res) => {
     if (s != null) {
         return res.status(409).send('Site with same name already exists');
     }
-
-    const decodedToken = getToken(req.body.token);
     
-    allowed = access.userOnly(decodedToken.user, req.params.id)
+    allowed = access.userOnly(req.sub.user, req.params.id)
     if (!allowed)
         return res.status(500).send("Not authorized");
 
     const site = new siteModel({
         name: req.body.name,
         uniqueName: uniqueName,
-        user: decodedToken.user,
+        user: req.sub.user,
         host: false
     });
     const siteCreated = await site.save();
@@ -34,8 +32,7 @@ module.exports.createSite = async(req, res) => {
 }
 
 module.exports.deleteSite = (req, res) => {
-    const decodedToken = getToken(req.body.token);
-    allowed = access.userOnly(decodedToken.user, req.params.userID)
+    allowed = access.userOnly(req.sub.user, req.params.userID)
     if (!allowed)
         return res.status(500).send("Not authorized");
 
@@ -48,13 +45,13 @@ module.exports.deleteSite = (req, res) => {
 }
 
 module.exports.editSiteName = (req, res) => {
+    console.log(req.body)
     if ('name' in req.body) {
         let uniqueName = getUniqueName(req.body.name)
         req.body['uniqueName'] = uniqueName
     }
 
-    const decodedToken = getToken(req.body.token);
-    allowed = access.userOnly(decodedToken.user, req.params.userID)
+    allowed = access.userOnly(req.sub.user, req.params.userID)
     if (!allowed)
         return res.status(500).send("Not authorized");
 
@@ -64,4 +61,22 @@ module.exports.editSiteName = (req, res) => {
         else
             return res.status(201).send("Site was updated");
     });
+}
+
+module.exports.updateHost = (req, res) => {
+    console.log(req.body.host);
+    let allowed = access.userOnly(req.sub.user, req.params.userID)
+    if (!allowed)
+        return res.status(500).send("Not authorized");
+
+    siteModel.findByIdAndUpdate(req.params.id, {'host': req.body.host}, (err, docs) => {
+        if (docs == null)
+            return res.status(404).send("Site not found");
+        else {
+            if (req.body.host)
+                return res.status(201).send("Site is now hosted");
+            else
+                return res.status(201).send("Site is not hosted");
+        }
+    })
 }

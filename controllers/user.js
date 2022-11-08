@@ -33,7 +33,7 @@ module.exports.authUser = async (req, res) => {
 
 module.exports.getUser = async (req, res) => {
     try {
-        allowed = access.userOnly(req.sub, req.params.id)
+        allowed = access.userOnly(req.sub.user, req.params.id)
         if (!allowed)
             return res.status(500).send("Not authorized");
         const user = await userModel.findById(req.params.id);
@@ -55,18 +55,17 @@ module.exports.validateToken = (req, res, next) => {
         return res.status(401).send("Cheque se a Bearer Authentication está correta.");
     
     jwt.verify(token, process.env.ACCESS_KEY, (err, docs) => {
-        console.log(docs)
         if (err)
             return res.status(403).send("Token inválido.");
-        req.sub = docs.user;
+        req.sub = {user: docs.user, token: token};
         next();
     });
 };
 
 module.exports.getUsersSite = async (req, res) => {
-    allowed = access.userOnly(req.sub, req.params.id)
+    allowed = access.userOnly(req.sub.user, req.params.id)
     if (!allowed)
         return res.status(500).send("Not authorized");
-    sites = await siteModel.find({user: req.sub});
+    sites = await siteModel.find({user: req.sub.user});
     return res.status(200).json(sites)
 }
